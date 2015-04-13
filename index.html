@@ -53,11 +53,22 @@
 
                 <section data-markdown>
                     <script type="text/template">
+## O mnie
+
+- dev @ [BMS](http://bms.com.pl)
+- twitter [@baandrzejczak](https://twitter.com/baandrzejczak)
+- github [@bandrzejczak](https://github.com/bandrzejczak)
+- blog @ [bandrzejczak.com](http://bandrzejczak.com)
+                    </script>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
 ## Agenda
 
 - Geneza kłamstwa
-- Co to jest HATEOAS i jak to się wymawia?
-- REST aka HATEOAS?
+- Co to jest HATEOAS?
+- Jak ważny jest HATEOAS?
 - Czy HATEOAS jest mi potrzebny?
 - HATEOAS od strony serwera
 - HATEOAS od strony klienta
@@ -134,7 +145,7 @@
 
                 <section>
                     <blockquote>
-                    Role, artefakty, zdarzenia oraz reguły <span class="fragment">Scruma</span> są niezmienne i choć możliwe jest wykorzystanie tylko wybranych jego elementów, wynikiem takiego postępowania nie będzie <span class="fragment">Scrum</span>. <span class="fragment">Scrum</span> istnieje tylko w swojej pełnej postaci i sprawdza się doskonale w roli ramy dla innych technik, metodyk czy praktyk.
+                        Role, artefakty, zdarzenia oraz reguły <span style="border-bottom: 3px dashed white; box-sizing:border-box;"><span class="fragment" data-fragment-index="1">Scruma</span></span> są niezmienne i choć możliwe jest wykorzystanie tylko wybranych jego elementów, wynikiem takiego postępowania nie będzie <span style="border-bottom: 3px dashed white; box-sizing:border-box;"><span class="fragment" data-fragment-index="1">Scrum</span></span>. <span style="border-bottom: 3px dashed white; box-sizing:border-box;"><span class="fragment" data-fragment-index="1">Scrum</span></span> istnieje tylko w swojej pełnej postaci i sprawdza się doskonale w roli ramy dla innych technik, metodyk czy praktyk.
                     </blockquote>
                     <div class="fragment author">
                         Scrum Guide
@@ -204,7 +215,6 @@
                         <li class="fragment">Więcej pracy</li>
                         <li class="fragment">Więcej transferu</li>
                         <li class="fragment">Brak ekspertów w temacie</li>
-                        <li class="fragment">Utopijna idea</li>
                         <li class="fragment"><span class="fragment highlight-red">Tworzenie API dla nieistniejącego klienta</span></li>
                     </ul>
                 </section>
@@ -226,12 +236,16 @@
                 </section>
 
                 <section>
+                    <img src="assets/swapi.png">
+                </section>
+
+                <section>
                     <h3>Format linków</h3>
                     <section data-markdown>
                         <script type="text/template">
 #### HTML
 ```html
-<a href="https://twitter.com/baandrzejczak">Bartek Andrzejczak</a>
+<a href="http://swapi.co/api/films/1/">A New Hope</a>
 ```
                         </script>
                     </section>
@@ -240,13 +254,14 @@
 #### JSON API
 ```json
 {
-    "type": "articles",
-    "id": "1",
-    "title": "Rails is Omakase",
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
+    "mass": "77 Kg",
+    "hair_color": "Blond",
     "links": {
-        "author": {
-            "self": "/articles/1/links/author",
-            "related": "/articles/1/author"
+        "species": {
+            "self": "http://swapi.co/api/species/1/",
+            "all": "http://swapi.co/api/species/"
         }
     }
 }
@@ -258,18 +273,18 @@
 #### PayPal API
 ```json
 {
-    "batch_header": { ... },
-    "items": [ ... ],
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
     "links": [
         {
-            "href": "https://api.paypal.com/v1/payments/7BSCA3W",
+            "href": "http://swapi.co/api/people/1/",
             "rel": "self",
             "method": "GET"
         },
         {
-            "href": "https://api.paypal.com/v1/payments/7BSCA3W/refund",
-            "rel": "refund",
-            "method": "POST"
+            "href": "http://swapi.co/api/species/1/",
+            "rel": "species",
+            "method": "GET"
         }
     ]
 }
@@ -280,18 +295,18 @@
                         <script type="text/template">
 #### VerticalResponse API
 ```json
-"links": {
-    "up": {
-        "url": "https://vrapi.com/api/v1/contacts"
-    },
-    "lists": {
-        "url": "https://vrapi.com/api/v1/contacts/109951393486/lists"
-    },
-    "messages": {
-        "url": "https://vrapi.com/api/v1/contacts/109951393486/messages"
-    },
-    "stats": {
-        "url": "https://vrapi.com/api/v1/contacts/109951393486/stats"
+{
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
+    "mass": "77 Kg",
+    "hair_color": "Blond",
+    "links": {
+        "up": {
+            "url": "http://swapi.co/api/people/1/"
+        },
+        "homeworld": {
+            "url": "http://swapi.co/api/planets/1/"
+        }
     }
 }
 ```
@@ -302,18 +317,18 @@
 #### Hypertext Application Language (HAL)
 ```json
 {
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
+    "mass": "77 Kg",
+    "hair_color": "Blond",
     "_links": {
         "self": {
-            "href": "https://api.com/taxes/31588",
-            "title": "This Tax"
+            "href": "http://swapi.co/api/people/1/",
+            "title": "Luke Skywalker"
         },
-        "https://api.foxycart.com/rels/store": {
-            "href": "https://api.com/stores/66",
-            "title": "This Store"
-        },
-        "https://api.foxycart.com/rels/tax_item_categories": {
-            "href": "https://api.com/taxes/31588/tax_item_categories",
-            "title": "Tax Item Category relationships"
+        "http://swapi.co/api/rels/species": {
+            "href": "http://swapi.co/api/species/1/",
+            "title": "Human"
         }
     }
 }
@@ -325,11 +340,12 @@
 #### JSON-LD
 ```json
 {
-    "@context": "http://json-ld.org/contexts/person.jsonld",
-    "@id": "http://dbpedia.org/resource/John_Lennon",
-    "name": "John Lennon",
-    "born": "1940-10-09",
-    "spouse": "http://dbpedia.org/resource/Cynthia_Lennon"
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
+    "mass": "77 Kg",
+    "hair_color": "Blond",
+    "@self": "http://swapi.co/api/people/1/",
+    "@species": "http://swapi.co/api/species/1/",
 }
 ```
                         </script>
@@ -338,12 +354,7 @@
                         <script type="text/template">
 #### Nagłówki HTTP
 ```
-Link: </deployments>;
-    rel="self";
-    actions="[
-        {'name':'deploy','method':'POST'},
-        {'name':'list','method':'GET'}
-    ]"
+Link: <http://swapi.co/api/species/1/>; rel="species"
 ```
                         </script>
                     </section>
@@ -357,70 +368,94 @@ Link: </deployments>;
                     <h3>Jersey Declarative Linking</h3>
                     <section>
                         <h4>Najprostszy przykład</h4>
-                        <pre><code data-trim>
-@Path("/widgets")
-public class WidgetsResource {
+                        <pre><code data-trim class="java">
+@Path("/people")
+public class PeopleResource {
     @GET
-    public Widgets get() {
-        return new Widgets();
+    public List&lt;Person&gt; list() { ... }
+    @GET
+    @Path("/{id}")
+    public Person get(@PathParam("id") String personId) {
+        return new PeopleRepository().find(personId);
     }
 }
 
-public class Widgets {
-    @InjectLink(resource=WidgetsResource.class)
-    URI u;
+public class Person {
+    public String name;
+    @InjectLink(resource=PeopleResource.class)
+    public URI self;
 }
                         </code></pre>
-                        <pre class="fragment"><code data-trim>
+                        <pre class="fragment"><code data-trim class="json">
 {
-    "u": "/widgets"
+    "name": "Luke Skywalker",
+    "self": "http://swapi.co/api/people"
 }
                         </code></pre>
                     </section>
                     <section>
                         <h4>Parametry ścieżek</h4>
-                        <pre><code data-trim>
-@Path("/widgets/{id}")
-public class SingleWidgetResource {
+                        <pre><code data-trim class="java">
+@Path("/people/{id}")
+public class PersonResource {
     ...
 }
-
-public class RelatedWidget {
+public class Person {
+    public String name;
     @InjectLink(
-        resource=SingleWidgetResource.class,
+        resource=PlanetResource.class,
         bindings={
-            @Binding("${resource.anotherId}")
+            @Binding("${resource.homeworldId}")
         }
     )
-    URI anotherWidget;
-    String anotherId;
+    public URI homeworld;
+    @JsonIgnore
+    public String homeworldId;
 }
                         </code></pre>
-                        <pre class="fragment"><code data-trim>
+                        <pre class="fragment"><code data-trim class="json">
 {
-    "anotherId": "123",
-    "anotherWidget": "/widgets/123"
+    "name": "Luke Skywalker",
+    "homeworld": "http://swapi.co/api/planets/1"
 }
                         </code></pre>
                     </section>
                     <section>
                         <h4>Stałe ścieżki</h4>
-                        <pre><code data-trim>
-public class Widgets {
-    @InjectLink("/widgets", rel="widgets")
-    URI u;
+                        <pre><code data-trim class="java">
+public class Root {
+    @InjectLink("/films", rel="films")
+    public URI films;
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="json">
+{
+    "films": "http://swapi.co/api/films"
 }
                         </code></pre>
                     </section>
                     <section>
                         <h4>Linki w nagłówkach</h4>
-                        <pre><code data-trim>
+                        <pre><code data-trim class="java">
 @InjectLinks(
-    value=@InjectLink("widgets/${resource.nextId}"),
-    rel="next"
+    value=@InjectLink("planets/${resource.homeworldId}"),
+    rel="homeworld"
 )
-public class Widget {
-    String nextId;
+public class Person {
+    public String name;
+    @JsonIgnore
+    public String homeworldId;
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="http">
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+Link: &lt;http://swapi.co/api/planets/1&gt;; rel="homeworld"
+
+{
+    "name": "Luke Skywalker"
 }
                         </code></pre>
                     </section>
@@ -441,57 +476,73 @@ public class Widget {
                     <h3>JAX-RS 2.0</h3>
                     <section>
                         Tylko imperatywna konstrukcja linków.
-                        <pre><code data-trim>
-@Path("/processes")
-public class ProcessesResource {
-
-    ...
-
+                        <pre><code data-trim class="java">
+@Path("/people/{id}")
+public class PersonResource {
     @GET
-    public Response list(@Auth AuthUser user) {
+    public Response get(@PathParam("id") String personId) {
         return Response
-                .ok(processService.listStartableProcesses(user))
-                .links(Link.fromResource(ProcessesResource.class)
-                            .rel("self").build())
+                .ok(new PeopleRepository().find(personId))
+                .links(Link.fromResource(PersonResource.class)
+                            .rel("self").build(personId))
                 .build();
     }
-
 }
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="http">
+HTTP 200 OK
+Content-Type: application/json
+Link: &lt;http://swapi.co/api/people/1&gt;; rel="self"
                         </code></pre>
                     </section>
                     <section>
                         Ścieżki można pobierać z metod...
-                        <pre><code data-trim>
+                        <pre><code data-trim class="java">
+@Path("/people/{id}")
+public class PersonResource {
+    @GET
+    public Response get(@PathParam("id") String personId) {
+        return Response
+                .ok(new PeopleRepository().find(personId))
+                .links(Link
+                        .fromMethod(PersonResource.class, "films")
+                        .rel("films").build(personId))
+                .build();
+    }
 
-
-@GET
-public Response list(@Auth AuthUser user) {
-    return Response
-            .ok(processService.listStartableProcesses(user))
-            .links(Link
-                    .fromMethod(ProcessesResource.class, "listDetails")
-                    .rel("details").build())
-            .build();
+    @GET
+    @Path("/films")
+    public Response films(){ ... }
 }
-
-//effective path is /processes/details
-@Path("/details")
-public Response listDetails(@Auth AuthUser user){
-    ...
-}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="http">
+HTTP 200 OK
+Content-Type: application/json
+Link: &lt;http://swapi.co/api/people/1/films&gt;; rel="films"
                         </code></pre>
                     </section>
                     <section>
                         ...lub hardcodować
-                        <pre><code data-trim>
+                        <pre><code data-trim class="java">
 @GET
-public Response list(@Auth AuthUser user) {
+public Response get(@PathParam("id") String personId) {
+    Person person = new PeopleRepository().find(personId);
+    String fatherId = person.findFather();
     return Response
-            .ok(processService.listStartableProcesses(user))
-            //Link: &lt;/processes/123&gt;; rel="sampleProcess"
-            .links(Link.fromPath("/processes/{id}")
-                        .rel("sampleProcess").build("123"))
+            .ok()
+            .links(Link
+                    .fromPath("/people/{id}")
+                    .rel("father").build(fatherId))
             .build();
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="http">
+HTTP 200 OK
+Content-Type: application/json
+Link: &lt;http://swapi.co/api/people/darthVader&gt;; rel="father"
+
+{
+    "name": "Luke Skywalker"
 }
                         </code></pre>
                     </section>
@@ -514,50 +565,45 @@ public Response list(@Auth AuthUser user) {
                     <section>
                         Aby dodawać linki do klasy, musi ona rozszerzać klasę ResourceSupport - linki staną się częścią reprezentacji.
                         <pre><code data-trim>
-public class Greeting extends ResourceSupport {
-
-    private final String content;
-
-    @JsonCreator
-    public Greeting(@JsonProperty("content") String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
+public class Person extends ResourceSupport {
+    public String name;
+    public String height;
+    public String mass;
+    public String hair_color;
 }
                         </code></pre>
                     </section>
                     <section>
                         Linki dodajemy bezpośrednio do reprezentacji
                         <pre><code data-trim>
-private static final String TEMPLATE = "Hello, %s!";
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
-@RequestMapping("/greeting")
-@ResponseBody
-public HttpEntity&lt;Greeting&gt; greeting(
-        @RequestParam(value = "name") String name) {
-    Greeting greeting = new Greeting(String.format(TEMPLATE, name));
-    greeting.add(
-        ControllerLinkBuilder.linkTo(
-            ControllerLinkBuilder.methodOn(GreetingController.class)
-                .greeting(name)
-        ).withSelfRel()
-    );
-    return new ResponseEntity&lt;Greeting&gt;(greeting, HttpStatus.OK);
+@Controller
+public class PersonController{
+    @RequestMapping("/people/{id}")
+    @ResponseBody
+    public HttpEntity&lt;Person&gt; get(@PathVariable("id") String personId) {
+        Person person = new PeopleRepository().find(personId);
+        person.add(
+            linkTo(methodOn(PersonController.class).get(personId))
+                .withSelfRel()
+        );
+        return new ResponseEntity&lt;Person&gt;(person, HttpStatus.OK);
+    }
 }
                         </code></pre>
                     </section>
                     <section>
                         Wynik:<br />
-                        <small>/greeting?name=World</small>
-                        <pre><code data-trim>
+                        <pre><code data-trim class="json">
 {
-    "content":"Hello, World!",
+    "name": "Luke Skywalker",
+    "height": "1.72 m",
+    "mass": "77 Kg",
+    "hair_color": "Blond",
     "_links":{
         "self":{
-            "href":"http://localhost:8080/greeting?name=World"
+            "href": "http://swapi.co/api/people/1"
         }
     }
 }
@@ -580,6 +626,14 @@ public HttpEntity&lt;Greeting&gt; greeting(
 
                 <section>
                     <h2>HATEOAS w kliencie</h2>
+                </section>
+
+                <section>
+                    <h2>Podsumowanie</h2>
+                </section>
+
+                <section>
+                    <h1>Pytania?</h1>
                 </section>
 			</div>
 		</div>
