@@ -629,6 +629,84 @@ public class PersonController{
                 </section>
 
                 <section>
+                    <h3>Java (JAX-RS)</h3>
+                    <section>
+                        Linki w reprezentacjach
+                            <pre><code data-trim>
+final Table table = target.request().get(Table.class);
+
+URI reservationURI = table.getLinks().getReservation().getUri();
+WebTarget reservationTarget = client.target(reservationURI);
+                            </code></pre>
+                    </section>
+                    <section>
+                        Linki w nagłówkach
+                            <pre><code data-trim>
+final Response response = target.request().get();
+
+URI parentURI = response.getLink("parent").getUri();
+URI frameworkURI = response.getLink("framework").getUri();
+                            </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <h3>JavaScript (AngularJS)</h3>
+                    <section>
+                        Linki w reprezentacjach
+                            <pre><code data-trim>
+var personResource = $resource("/api/people/:personId");
+
+var people = personResource.query(null, function () {
+    var firstPerson = people[0];
+    var firstPersonAddresses = $resource(firstPerson.links.addresses)
+                                .query(null, function () {
+        console.log(firstPersonAddresses);
+    });
+});
+                            </code></pre>
+                    </section>
+                    <section>
+                        Linki w nagłówkach
+                            <pre><code data-trim>
+var personResource = $resource("/api/people/:personId");
+
+var people = personResource.query(null, function () {
+    var firstPerson = people[0];
+    var firstPersonAddresses = firstPerson.resource("addresses")
+                                .query(null, function () {
+        console.log(firstPersonAddresses);
+    });
+});
+                            </code></pre>
+                    </section>
+                    <section>
+                        Moje rozwiązanie (nagłówki)
+                            <pre><code data-trim>
+var LINK_HEADER = '&lt;/services&gt;;' +
+            'rel="next"; actions="[{"name":"refresh","method":"GET"}]"',
+    TEST_DATA = { test: 'test' };
+                            </code></pre>
+                            <pre><code data-trim>
+it('should link connected resources to the call result', function() {
+    var result = getAnyResourceWithLinks();
+    //when
+    mockHttp.expectGET(REST_API_URL + NEXT_PATH).respond(200,TEST_DATA);
+    var resultFromLinkInvocation;
+    result.links.next.refresh().$promise.then(function(data){
+        resultFromLinkInvocation = data;
+    });
+    mockHttp.flush();
+    //then
+    expect(resultFromLinkInvocation).toBeDefined();
+    expect(resultFromLinkInvocation.response).toEqual(TEST_DATA);
+    expect(resultFromLinkInvocation.links).toBeUndefined();
+});
+                            </code></pre>
+                    </section>
+                </section>
+
+                <section>
                     <h2>Podsumowanie</h2>
                 </section>
 
