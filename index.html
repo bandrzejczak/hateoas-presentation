@@ -47,7 +47,7 @@
 				<section>
 					<h2>Dlaczego 99% firm, które tworzą API&nbsp;RESTowe kłamie?</h2>
 					<p>
-						<small><a href="http://bandrzejczak.com">Bartek Andrzejczak</a> / <a href="http://twitter.com/bandrzejczak">@bandrzejczak</a></small>
+						<small><a href="http://bandrzejczak.com">Bartek Andrzejczak</a> / <a href="http://twitter.com/baandrzejczak">@baandrzejczak</a></small>
 					</p>
 				</section>
 
@@ -632,21 +632,41 @@ public class PersonController{
                     <h3>Java (JAX-RS)</h3>
                     <section>
                         Linki w reprezentacjach
-                            <pre><code data-trim>
-final Table table = target.request().get(Table.class);
+                        <pre><code data-trim class="json">
+{
+    "name": "Luke Skywalker",
+    "links": {
+        "homeworld": {
+            "uri": "http://swapi.co/api/planets/1"
+        }
+    }
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="java">
+final Person table = target.request().get(Person.class);
 
-URI reservationURI = table.getLinks().getReservation().getUri();
-WebTarget reservationTarget = client.target(reservationURI);
-                            </code></pre>
+URI homeworldURI = table.getLinks().getHomeworld().getUri();
+WebTarget homeworldTarget = client.target(homeworldURI);
+                        </code></pre>
                     </section>
                     <section>
                         Linki w nagłówkach
-                            <pre><code data-trim>
+                        <pre><code data-trim class="http">
+HTTP 200 OK
+Content-Type: application/json
+Link: &lt;http://swapi.co/api/planets/1&gt;; rel="homeworld"
+Link: &lt;http://swapi.co/api/species/1&gt;; rel="species"
+
+{
+    "name": "Luke Skywalker"
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="java">
 final Response response = target.request().get();
 
-URI parentURI = response.getLink("parent").getUri();
-URI frameworkURI = response.getLink("framework").getUri();
-                            </code></pre>
+URI homeworldURI = response.getLink("homeworld").getUri();
+URI speciesURI = response.getLink("species").getUri();
+                        </code></pre>
                     </section>
                 </section>
 
@@ -654,60 +674,83 @@ URI frameworkURI = response.getLink("framework").getUri();
                     <h3>JavaScript (AngularJS)</h3>
                     <section>
                         Linki w reprezentacjach
-                            <pre><code data-trim>
+                        <pre><code data-trim class="json">
+{
+    "name": "Luke Skywalker",
+    "links": {
+        "father": {
+            "uri": "http://swapi.co/api/people/2"
+        }
+    }
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="javascript">
 var personResource = $resource("/api/people/:personId");
 
-var people = personResource.query(null, function () {
-    var firstPerson = people[0];
-    var firstPersonAddresses = $resource(firstPerson.links.addresses)
+var luke = personResource.query({personId: 1}, function () {
+    var lukesFather = $resource(luke.links.father)
                                 .query(null, function () {
-        console.log(firstPersonAddresses);
+        console.log(lukesFather);
     });
 });
-                            </code></pre>
+                        </code></pre>
                     </section>
                     <section>
                         Linki w nagłówkach
-                            <pre><code data-trim>
+                        <pre><code data-trim class="http">
+HTTP 200 OK
+Content-Type: application/json
+Link: &lt;http://swapi.co/api/people/2&gt;; rel="father"
+
+{
+    "name": "Luke Skywalker"
+}
+                        </code></pre>
+                        <pre class="fragment"><code data-trim class="javascript">
 var personResource = $resource("/api/people/:personId");
 
-var people = personResource.query(null, function () {
-    var firstPerson = people[0];
-    var firstPersonAddresses = firstPerson.resource("addresses")
+var luke = personResource.query({personId: 1}, function () {
+    var lukesFather = firstPerson.resource("father")
                                 .query(null, function () {
-        console.log(firstPersonAddresses);
+        console.log(lukesFather);
     });
 });
-                            </code></pre>
+                        </code></pre>
                     </section>
                     <section>
-                        Moje rozwiązanie (nagłówki)
-                            <pre><code data-trim>
-var LINK_HEADER = '&lt;/services&gt;;' +
-            'rel="next"; actions="[{"name":"refresh","method":"GET"}]"',
-    TEST_DATA = { test: 'test' };
+                        Inne podejście do nagłówków
+                            <pre><code data-trim class="http">
+Link: &lt;/people&gt;;
+    rel="people";
+    actions="[
+        {'name':'add','method':'POST'},
+        {'name':'list','method':'GET'}
+    ]"
+
                             </code></pre>
-                            <pre><code data-trim>
-it('should link connected resources to the call result', function() {
-    var result = getAnyResourceWithLinks();
-    //when
-    mockHttp.expectGET(REST_API_URL + NEXT_PATH).respond(200,TEST_DATA);
-    var resultFromLinkInvocation;
-    result.links.next.refresh().$promise.then(function(data){
-        resultFromLinkInvocation = data;
-    });
-    mockHttp.flush();
-    //then
-    expect(resultFromLinkInvocation).toBeDefined();
-    expect(resultFromLinkInvocation.response).toEqual(TEST_DATA);
-    expect(resultFromLinkInvocation.links).toBeUndefined();
-});
+                            <pre class="fragment"><code data-trim class="javascript">
+$http.get("/").success(
+    function (root) {
+        var peopleList = root.links.people.list();
+        root.links.people.add(
+            {
+                "name": "Darth Vader",
+                "height": "1.8"
+            }
+        );
+    }
+);
                             </code></pre>
                     </section>
                 </section>
 
                 <section>
                     <h2>Podsumowanie</h2>
+                    <ul>
+                        <li class="fragment">HATEOAS</li>
+                        <li class="fragment">Maszyna stanów</li>
+                        <li class="fragment">Rosnące wsparcie bibliotek</li>
+                    </ul>
                 </section>
 
                 <section>
