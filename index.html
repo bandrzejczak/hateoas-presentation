@@ -45,8 +45,8 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h2>Dlaczego 99% firm, które tworzą API&nbsp;RESTowe kłamie?</h2>
-					<p>
+                    <h2>Dlaczego 99% firm, które tworzą API&nbsp;RESTowe kłamie?</h2>
+                    <p>
 						<small><a href="http://bandrzejczak.com">Bartek Andrzejczak</a> / <a href="http://twitter.com/baandrzejczak">@baandrzejczak</a></small>
 					</p>
 				</section>
@@ -73,20 +73,6 @@
 - HATEOAS od strony serwera
 - HATEOAS od strony klienta
                     </script>
-                </section>
-
-                <section>
-                    <h3>Czym właściwie jest REST?</h3>
-                    <blockquote class="fragment">
-                        This chapter introduces and elaborates the Representational State Transfer (REST) <span class="fragment highlight-red">architectural style</span> for distributed hypermedia systems (...)
-                    </blockquote>
-                    <blockquote class="fragment">
-                        (...) a style is a named <span class="fragment highlight-red">set of constraints</span> on architectural elements that induces the set of properties desired of the architecture.
-                    </blockquote>
-                    <div class="fragment author">
-                        "Architectural Styles and the Design of Network-based Software Architectures"<br />
-                        Roy T. Fielding
-                    </div>
                 </section>
 
                 <section>
@@ -125,6 +111,20 @@
                 </section>
 
                 <section>
+                    <h3>Czym właściwie jest REST?</h3>
+                    <blockquote class="fragment">
+                        This chapter introduces and elaborates the Representational State Transfer (REST) <span class="fragment highlight-red">architectural style</span> for distributed hypermedia systems (...)
+                    </blockquote>
+                    <blockquote class="fragment">
+                        (...) a style is a named <span class="fragment highlight-red">set of constraints</span> on architectural elements that induces the set of properties desired of the architecture.
+                    </blockquote>
+                    <div class="fragment author">
+                        "Architectural Styles and the Design of Network-based Software Architectures"<br />
+                        Roy T. Fielding
+                    </div>
+                </section>
+
+                <section>
                     <h3>Ograniczenia narzucane przez REST</h3>
                     <ul>
                         <li>Podział klient-serwer</li>
@@ -141,6 +141,13 @@
                         <li>Podział na warstwy</li>
                         <li>Code-on-demand (Opcjonalne)</li>
                     </ul>
+                </section>
+
+                <section>
+                    <h2><span class="fragment highlight-red" data-fragment-index="1">H</span>ypermedia <span class="fragment highlight-red" data-fragment-index="1">A</span>s <span class="fragment highlight-red" data-fragment-index="1">T</span>he <span class="fragment highlight-red" data-fragment-index="1">E</span>ngine <span class="fragment highlight-red" data-fragment-index="1">O</span>f <span class="fragment highlight-red" data-fragment-index="1">A</span>pplication <span class="fragment highlight-red" data-fragment-index="1">S</span>tate</h2>
+                    <aside class="notes">
+                        Nie ma nazwy dla czegoś, co jest niepełnym RESTem
+                    </aside>
                 </section>
 
                 <section>
@@ -170,9 +177,9 @@
                 <section>
                     The name “Representational State Transfer” is intended to evoke an image of how a well-designed Web application behaves:
                     <ul>
-                        <li class="fragment">a network of web pages (a virtual <span class="fragment highlight-red">state-machine</span>)</li>
-                        <li class="fragment">where the user progresses through the application by selecting <span class="fragment highlight-red">links</span> (state transitions)</li>
-                        <li class="fragment">resulting in the next page (representing the next state of the application) being transferred to the user and rendered for their use</li>
+                        <li class="fragment" data-fragment-index="1">a network of web pages (a virtual <span class="fragment highlight-red" data-fragment-index="2">state-machine</span>)</li>
+                        <li class="fragment" data-fragment-index=3>where the user progresses through the application by selecting <span class="fragment highlight-red" data-fragment-index="4">links</span> (<span class="fragment highlight-red" data-fragment-index="4">state transitions</span>)</li>
+                        <li class="fragment" data-fragment-index="5">resulting in the next page (representing <span class="fragment highlight-red" data-fragment-index="6">the next state of the application</span>) being transferred to the user and rendered for their use</li>
                     </ul>
                 </section>
 
@@ -196,6 +203,9 @@
                         <li class="fragment">CRUD</li>
                         <li class="fragment">Małe API</li>
                     </ul>
+                    <aside class="notes">
+                        Kiedy nikt nie będzie używał naszych linków - Nie wymusimy tego np. psując urle
+                    </aside>
                 </section>
 
                 <section>
@@ -207,6 +217,9 @@
                         <li class="fragment">Dodatkowa dokumentacja API (jednak niewystarczająca)</li>
                         <li class="fragment">Ułatwienie dla (twórców) konsumentów API</li>
                     </ul>
+                    <aside class="notes">
+                        Wersjonowanie - loosly coupled
+                    </aside>
                 </section>
 
                 <section>
@@ -301,7 +314,7 @@
     "mass": "77 Kg",
     "hair_color": "Blond",
     "links": {
-        "up": {
+        "self": {
             "url": "http://swapi.co/api/people/1/"
         },
         "homeworld": {
@@ -312,7 +325,7 @@
 ```
                         </script>
                     </section>
-                    <section data-markdown>
+                    <section data-markdown data-separator-notes="^Note:">
                         <script type="text/template">
 #### Hypertext Application Language (HAL)
 ```json
@@ -333,6 +346,38 @@
     }
 }
 ```
+
+Note:
+HAL 9000 ;)
+                        </script>
+                    </section>
+                    <section data-markdown data-separator-notes="^Note:">
+                        <script type="text/template">
+#### Hypertext Application Language (HAL)
+```json
+{
+  "_links": {
+    "self": {
+      "href": "/"
+    },
+    "curies": [
+      {
+        "name": "ht",
+        "href": "http://haltalk.herokuapp.com/rels/{rel}",
+        "templated": true
+      }
+    ],
+    "ht:users": {
+      "href": "/users"
+    }
+  }
+}
+```
+
+Note:
+Nie jest to jednostka radioaktywności :)
+
+CURIE => Compact URI
                         </script>
                     </section>
                     <section data-markdown>
@@ -466,6 +511,7 @@ Link: &lt;http://swapi.co/api/planets/1&gt;; rel="homeworld"
                         </ul>
                         <h3>Minusy</h3>
                         <ul style="width: 80%">
+                            <li>Brak możliwości przesyłania tylko niektórych linków</li>
                             <li class="fragment highlight-red">Silne połączenie reprezentacji z zasobami</li>
                             <li>Annotation hell</li>
                         </ul>
@@ -718,8 +764,7 @@ var luke = personResource.query({personId: 1}, function () {
                         </code></pre>
                     </section>
                     <section>
-                        Inne podejście do nagłówków
-                            <pre><code data-trim class="http">
+                        <pre><code data-trim class="http">
 Link: &lt;/people&gt;;
     rel="people";
     actions="[
@@ -727,8 +772,8 @@ Link: &lt;/people&gt;;
         {'name':'list','method':'GET'}
     ]"
 
-                            </code></pre>
-                            <pre class="fragment"><code data-trim class="javascript">
+                        </code></pre>
+                        <pre class="fragment" data-fragment-index="1"><code data-trim class="javascript">
 $http.get("/").success(
     function (root) {
         var peopleList = root.links.people.list();
@@ -740,7 +785,9 @@ $http.get("/").success(
         );
     }
 );
-                            </code></pre>
+                        </code></pre>
+                        <small class="fragment" data-fragment-index="2"><a href="https://github.com/bandrzejczak/bpm-console-gui">https://github.com/bandrzejczak/bpm-console-gui</a></small><br />
+                        <small class="fragment" data-fragment-index="2"><a href="https://github.com/bandrzejczak/bpm-console-rest">https://github.com/bandrzejczak/bpm-console-rest</a></small>
                     </section>
                 </section>
 
